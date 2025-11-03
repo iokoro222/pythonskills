@@ -1,23 +1,41 @@
 import string
 
 in_str = input("Please enter your input: ")
+shift_key = 4
+letters = list(string.ascii_lowercase)
 
-string = str(in_str)            
-letters = list(string.ascii_lowercase)  
+ltn = { letters[i]: i for i in range(len(letters)) }
+ntl = { i: letters[i] for i in range(len(letters)) }
 
-key = {
-num_to_letter = { i: letters[i] for i in range(len(letters)) }  
-letter_to_num = { letters[i]: i for i in range(len(letters)) }
+def encrypt(text, shift):
+    """Encrypt the given lowercase-alphabetic + whitespace text with the shift key."""
+    result = ""
+    for ch in text:
+        if ch in ltn:
+            orig_index = ltn[ch]
+            new_index  = (orig_index + shift) % 26
+            result += ntl[new_index]
+        else:
+            # leave whitespace or non-lowercase unchanged
+            result += ch
+    return result
 
+def decrypt(ciphertext, shift):
+    """Decrypt the ciphertext (assuming it was produced with encrypt above) using the shift key."""
+    result = ""
+    for ch in ciphertext:
+        if ch in ltn:
+            orig_index = ltn[ch]
+            new_index  = (orig_index - shift) % 26
+            result += ntl[new_index]
+        else:
+            result += ch
+    return result
 
-    "num_to_letter": num_to_letter,
-    "letter_to_num": letter_to_num
-}    
+# Run encryption
+cipher = encrypt(in_str, shift_key)
+print("Encrypted text:", cipher)
 
-def e_func(string, key)
-output = key
-
-returns output
-
-def d_func(output, key)
-return n_output
+# Run decryption
+plain  = decrypt(cipher, shift_key)
+print("Decrypted text:", plain)
